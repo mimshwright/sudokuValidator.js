@@ -25,6 +25,7 @@ test("validateSudoku", function () {
 
 	equal (validateSudoku(MATRIX_BAD_DIMENSIONS), false, "Matrix must be NxN");
 	equal (validateSudoku(MATRIX_DIMENSION_NOT_A_SQUARE), false, "√N must be an integer.");
+	equal (validateSudoku(MATRIX_MISSING_DIGIT), false, "All row lengths need to match the number of columns");
 	equal (validateSudoku(MATRIX_OUT_OF_RANGE), false, "Cell values must be 1<=x<=N");
 	equal (validateSudoku(MATRIX_BAD_COLUMNS), false, "Matrix must have 1 of each digit 1..N per column.");
 	equal (validateSudoku(MATRIX_BAD_ROWS), false, "Matrix must have 1 of each digit 1..N per row.");
@@ -98,6 +99,21 @@ var MATRIX_DIMENSION_NOT_A_SQUARE = [
 	[1,2,3],
 	[2,3,1],
 	[3,1,2]
+];
+
+// An otherwise fine 3x3 matrix that is missing one digit
+var MATRIX_MISSING_DIGIT = [
+	[7,8,4, 1,5,9, 3,2,6],
+	[5,3,9, 6,7,2, 8,4,1],
+	[6,1,2, 4,3,8, 7,5  ],
+
+	[9,2,8, 7,1,5, 4,6,3],
+	[3,5,7, 8,4,6, 1,9,2],
+	[4,6,1, 9,2,3, 5,8,7],
+
+	[8,7,6, 3,9,4, 2,1,5],
+	[2,4,3, 5,6,1, 9,7,8],
+	[1,9,5, 2,8,7, 6,3,4]
 ];
 
 // 4x4 matrix with values > N
