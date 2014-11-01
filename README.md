@@ -29,7 +29,7 @@ Validates the correctness of arbitrarily sized sudoku puzzles.
 ]
 ```
 ## Use
-var puzzleIsValid = validateSudoku (puzzle);
+`var puzzleIsValid = validateSudoku (puzzle);`
 
 ## Tests
 [View qunit test results](http://rawgit.com/mimshwright/sudokuValidator.js/master/test/index.html)
