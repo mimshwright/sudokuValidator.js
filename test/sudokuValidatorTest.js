@@ -1,59 +1,68 @@
+var s = SudokuValidator;
+
 ////////// TESTS //////////
+
+module ("dependency");
+
+test("dependencies", function () {
+    ok (SudokuValidator, "SudokuValidator loaded.");
+});
 
 module ("validators");
 
-test("validateSudoku", function () {
-    equal (validateSudoku(MATRIX_1x1), true, "Validates 1x1 matrix");
-    equal (validateSudoku(MATRIX_4x4), true, "Validates 4x4 matrix");
-    equal (validateSudoku(MATRIX_9x9), true, "Validates 9x9 matrix");
-    equal (validateSudoku(MATRIX_16x16), true, "Validates 16x16 matrix");
 
-    equal (validateSudoku(MATRIX_BAD_DIMENSIONS), false, "Matrix must be NxN");
-    equal (validateSudoku(MATRIX_DIMENSION_NOT_A_SQUARE), false, "√N must be an integer.");
-    equal (validateSudoku(MATRIX_MISSING_DIGIT), false, "All row lengths need to match the number of columns");
-    equal (validateSudoku(MATRIX_OUT_OF_RANGE), false, "Cell values must be 1<=x<=N");
-    equal (validateSudoku(MATRIX_BAD_ROW_TYPE), false, "Rows must be arrays");
-    equal (validateSudoku(MATRIX_BAD_COLUMNS), false, "Matrix must have 1 of each digit 1..N per column.");
-    equal (validateSudoku(MATRIX_BAD_ROWS), false, "Matrix must have 1 of each digit 1..N per row.");
-    equal (validateSudoku(MATRIX_BAD_SQUARES), false, "Matrix must have 1 of each digit 1..N per square.");
+test("validateSudoku", function () {
+    equal (s.validateSudoku(MATRIX_1x1), true, "Validates 1x1 matrix");
+    equal (s.validateSudoku(MATRIX_4x4), true, "Validates 4x4 matrix");
+    equal (s.validateSudoku(MATRIX_9x9), true, "Validates 9x9 matrix");
+    equal (s.validateSudoku(MATRIX_16x16), true, "Validates 16x16 matrix");
+
+    equal (s.validateSudoku(MATRIX_BAD_DIMENSIONS), false, "Matrix must be NxN");
+    equal (s.validateSudoku(MATRIX_DIMENSION_NOT_A_SQUARE), false, "√N must be an integer.");
+    equal (s.validateSudoku(MATRIX_MISSING_DIGIT), false, "All row lengths need to match the number of columns");
+    equal (s.validateSudoku(MATRIX_OUT_OF_RANGE), false, "Cell values must be 1<=x<=N");
+    equal (s.validateSudoku(MATRIX_BAD_ROW_TYPE), false, "Rows must be arrays");
+    equal (s.validateSudoku(MATRIX_BAD_COLUMNS), false, "Matrix must have 1 of each digit 1..N per column.");
+    equal (s.validateSudoku(MATRIX_BAD_ROWS), false, "Matrix must have 1 of each digit 1..N per row.");
+    equal (s.validateSudoku(MATRIX_BAD_SQUARES), false, "Matrix must have 1 of each digit 1..N per square.");
 });
 
 test("validateCell", function () {
-    equal (validateCell(1, 9), true, "1 is between 1..9");
-    equal (validateCell(9, 9), true, "9 is between 1..9");
+    equal (s.validateCell(1, 9), true, "1 is between 1..9");
+    equal (s.validateCell(9, 9), true, "9 is between 1..9");
 
-    equal (validateCell(0, 9), false, "0 is not between 1..N");
-    equal (validateCell(-1, 9), false, "-1 is not between 1..N");
-    equal (validateCell(789, 9), false, "789 is not between 1..N");
-    equal (validateCell(5.7, 9), false, "5.7 is not an integer");
-    equal (validateCell("sudoku", 9), false, "\"sudoku\" is not an integer");
-    equal (validateCell(null, 9), false, "null is not an integer");
+    equal (s.validateCell(0, 9), false, "0 is not between 1..N");
+    equal (s.validateCell(-1, 9), false, "-1 is not between 1..N");
+    equal (s.validateCell(789, 9), false, "789 is not between 1..N");
+    equal (s.validateCell(5.7, 9), false, "5.7 is not an integer");
+    equal (s.validateCell("sudoku", 9), false, "\"sudoku\" is not an integer");
+    equal (s.validateCell(null, 9), false, "null is not an integer");
 
-    equal (validateCell("5", 9), true, "\"5\" evaluates to 5");
+    equal (s.validateCell("5", 9), true, "\"5\" evaluates to 5");
 });
 
 test("validateSet", function () {
-    equal (validateSet([1,2,3,4,5,6,7,8,9]), true, "Each number 1..N appears exactly once");
-    equal (validateSet([3,7,1,5,2,9,8,4,6]), true, "Order doesn't matter");
-    equal (validateSet([1,2,3,4,5,6,7,8]), true, "Doesn't check for length");
+    equal (s.validateSet([1,2,3,4,5,6,7,8,9]), true, "Each number 1..N appears exactly once");
+    equal (s.validateSet([3,7,1,5,2,9,8,4,6]), true, "Order doesn't matter");
+    equal (s.validateSet([1,2,3,4,5,6,7,8]), true, "Doesn't check for length");
 
-    equal (validateSet([2,2,3,4,5,6,7,8,9]), false, "The same number cannot appear twice.");
+    equal (s.validateSet([2,2,3,4,5,6,7,8,9]), false, "The same number cannot appear twice.");
 });
 
 
 test("validator sub-functions", function () {
-    equal (validateMatrixSize(MATRIX_9x9), true, "Validates matrix dimensions");
-    equal (validateCells(MATRIX_9x9), true, "Validates each cell value");
-    equal (validateOneOfEachRule(MATRIX_9x9), true, "Validates sudoku rules");
+    equal (s.validateMatrixSize(MATRIX_9x9), true, "Validates matrix dimensions");
+    equal (s.validateCells(MATRIX_9x9), true, "Validates each cell value");
+    equal (s.validateOneOfEachRule(MATRIX_9x9), true, "Validates sudoku rules");
 });
 
 module ("getters");
 
 test("get functions", function () {
-    deepEqual (getRowAt(MATRIX_9x9, 0), [7,8,4, 1,5,9, 3,2,6], "getRowAt() pulls out a single row");
-    deepEqual (getColumnAt(MATRIX_9x9, 0), [7,5,6,9,3,4,8,2,1], "getColumnAt() pulls out a single column");
-    deepEqual (getSquareAt(MATRIX_9x9, 4), [7,1,5,8,4,6,9,2,3], "getSquareAt() pulls out an array for a square region");
-    equal (getCellAt(MATRIX_9x9, 5, 2), 8, "getCellAt() pulls the correct value of a cell.");
+    deepEqual (s.getRowAt(MATRIX_9x9, 0), [7,8,4, 1,5,9, 3,2,6], "getRowAt() pulls out a single row");
+    deepEqual (s.getColumnAt(MATRIX_9x9, 0), [7,5,6,9,3,4,8,2,1], "getColumnAt() pulls out a single column");
+    deepEqual (s.getSquareAt(MATRIX_9x9, 4), [7,1,5,8,4,6,9,2,3], "getSquareAt() pulls out an array for a square region");
+    equal (s.getCellAt(MATRIX_9x9, 5, 2), 8, "getCellAt() pulls the correct value of a cell.");
 });
 
 
